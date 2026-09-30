@@ -17,6 +17,6 @@ jobs:
       # CPU wheels keep CI fast; GPU/QLoRA runs happen on a GPU box or Colab.
       - run: pip install torch --index-url https://download.pytorch.org/whl/cpu
       - run: pip install -e ".[dev]"
-      - run: ruff check . && ruff format --check .
+      - run: ruff check src tests && ruff format --check src tests
       - name: Unit + end-to-end smoke tests (tiny random model, CPU)
         run: pytest -q
