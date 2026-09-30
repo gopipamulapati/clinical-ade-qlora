@@ -1,0 +1,23 @@
+# Fits a single 16 GB GPU (e.g. Colab T4) in 4-bit.
+base_model: Qwen/Qwen2.5-1.5B-Instruct
+load_in_4bit: true
+bnb_4bit_quant_type: nf4
+bnb_4bit_compute_dtype: bfloat16   # use float16 on T4
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+max_seq_len: 512
+learning_rate: 2.0e-4
+num_epochs: 2
+per_device_batch_size: 8
+gradient_accumulation_steps: 2
+warmup_ratio: 0.05
+lr_scheduler: cosine
+gradient_checkpointing: true
+seed: 42
+data:
+  train: data/train.jsonl
+  eval: data/eval.jsonl
+output_dir: outputs/qwen2.5-1.5b-ade

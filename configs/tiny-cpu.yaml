@@ -1,0 +1,21 @@
+# Offline smoke test: random tiny Llama + locally trained tokenizer, CPU only.
+base_model: tiny-random
+load_in_4bit: false
+lora:
+  r: 32
+  alpha: 64
+  dropout: 0.0
+  target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+max_seq_len: 256
+learning_rate: 5.0e-3
+num_epochs: 3
+per_device_batch_size: 4
+gradient_accumulation_steps: 1
+warmup_ratio: 0.0
+lr_scheduler: constant
+gradient_checkpointing: false
+seed: 0
+data:
+  train: data/train.jsonl
+  eval: data/eval.jsonl
+output_dir: outputs/tiny

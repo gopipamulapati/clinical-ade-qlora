@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "clinical-ade-qlora"
+version = "0.1.0"
+description = "QLoRA fine-tuning pipeline that teaches a small open LLM to extract adverse drug events from clinical notes as structured JSON."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Gopi Pamulapati" }]
+dependencies = [
+  "torch>=2.2",
+  "transformers>=4.44",
+  "peft>=0.12",
+  "accelerate>=0.33",
+  "pydantic>=2.5",
+  "pyyaml>=6",
+  "typer>=0.12",
+]
+
+[project.optional-dependencies]
+gpu = ["bitsandbytes>=0.43"]
+serve = ["fastapi>=0.110", "uvicorn>=0.29"]
+dev = ["pytest>=8", "ruff>=0.5", "tokenizers>=0.19", "fastapi>=0.110", "httpx>=0.27"]
+
+[project.scripts]
+ade-ft = "ade_ft.cli:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+markers = ["smoke: end-to-end training on a tiny random model (CPU, ~seconds)"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["B008"]
